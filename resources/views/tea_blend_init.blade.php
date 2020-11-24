@@ -492,25 +492,27 @@
 				var d = $('#main_form, #table_data_form').serializeArray();
 				// var table_d = $('#head_table').val();
 				d.push({name:'_token', value:'{{csrf_token()}}'});
+				// console.log(d);
 				// alert (JSON.stringify(d));
 				$.ajax({
 					url: '/blend_sheet_creator',
 					data : d,
 					method:'GET',
-					errors:function(e){
-						alert (e)
-					},
 					success:function(r){
-						if(r.status = "200"){
-							table_load();
-							alert (JSON.stringify(r));
-						} else {
-							table_load();
-							alert ("Not DONE");
-						}
+						// if(r.status = "200"){
+						// 	table_load();
+						// 	alert (JSON.stringify(r));
+						// } else {
+						// 	table_load();
+						// 	alert ("Not DONE");
+						// }
+						console.log(r);
 						
-					}
-					// dataType:'json',
+					},
+					error:function(e){
+						console.log('error');
+					},
+				// 	// dataType:'json',
 
 				});
 			});

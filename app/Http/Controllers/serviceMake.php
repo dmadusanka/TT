@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\teaTask;
 use Illuminate\Support\Facades\DB;
 
-class serviceMake extends Controller
+class serviceMake extends Controller 
 {
     public function main_page(){
     	return view('loging');
@@ -37,7 +37,25 @@ class serviceMake extends Controller
     }
 
     public function blend_sheet_creator(Request $req){
-        return "Came Here";
+
+        $id = DB::table('export_details')->insertGetId([
+            'company_id'=>$req->input('companay'),
+            'shipment_date'=>$req->input('s_date'),
+            'reg_no'=>$req->input('reg_no'),
+            'ctr_no'=>$req->input('ctr_no'),
+            'tea_grade'=>$req->input('tea_grade'),
+            'ship_qty_kg'=>$req->input('shipment_qua')
+        ]);
+
+        DB::table('tea_stock_details')->insertGetId([
+            'export_id'=>$id,
+            'task_id'=>$req->input('search'),
+            'using_tea'=>$req->input('using_tea'),
+            'balance_tea'=>$req->input('balance_tea')
+        ]);
+
+
+        return true;
     }
 
     public function dashboard(){

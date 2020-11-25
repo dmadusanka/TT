@@ -233,6 +233,9 @@
 					<button id="submit" name="submit" type="submit" class="btn btn-primary">
 						<i class="icon-check2"></i> Save
 					</button>
+					<section id="printId">
+						
+					</section>
 
 				</div>
 					<input type="hidden" id="operation" name="operation" value="insert">
@@ -492,25 +495,36 @@
 				var d = $('#main_form, #table_data_form').serializeArray();
 				// var table_d = $('#head_table').val();
 				d.push({name:'_token', value:'{{csrf_token()}}'});
+				// console.log(d);
 				// alert (JSON.stringify(d));
 				$.ajax({
 					url: '/blend_sheet_creator',
 					data : d,
 					method:'GET',
-					errors:function(e){
-						alert (e)
-					},
 					success:function(r){
-						if(r.status = "200"){
-							table_load();
-							alert (JSON.stringify(r));
-						} else {
-							table_load();
-							alert ("Not DONE");
+						// if(r.status = "200"){
+						// 	table_load();
+						// 	alert (JSON.stringify(r));
+						// } else {
+						// 	table_load();
+						// 	alert ("Not DONE");
+						// }
+						if(r['status']){
+							var html = `<a id="print" name="print" href="/generateExport?ecp=`+r['id1']+`" type="submit" class="btn btn-success">
+											<i class="icon-check2"></i>Print
+										</a>`;
+
+							$('#printId').html(html);			
+
+
 						}
+						console.log(r);
 						
-					}
-					// dataType:'json',
+					},
+					error:function(e){
+						console.log('error');
+					},
+				// 	// dataType:'json',
 
 				});
 			});

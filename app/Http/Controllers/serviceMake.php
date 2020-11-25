@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\teaTask;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
-class serviceMake extends Controller
+class serviceMake extends Controller 
 {
     public function main_page(){
     	return view('loging');
@@ -37,7 +38,39 @@ class serviceMake extends Controller
     }
 
     public function blend_sheet_creator(Request $req){
-        return "Came Here";
+
+        $id = DB::table('export_details')->insertGetId([
+            'company_id'=>$req->input('companay'),
+            'shipment_date'=>$req->input('s_date'),
+            'reg_no'=>$req->input('reg_no'),
+            'ctr_no'=>$req->input('ctr_no'),
+            'tea_grade'=>$req->input('tea_grade'),
+            'ship_qty_kg'=>$req->input('shipment_qua')
+        ]);
+
+        $id1 = DB::table('tea_stock_details')->insertGetId([
+            'export_id'=>$id,
+            'task_id'=>$req->input('search'),
+            'using_tea'=>$req->input('using_tea'),
+            'balance_tea'=>$req->input('balance_tea')
+        ]);
+
+
+        return ['status'=>true,'id1'=>$id1];
+    }
+
+    public function print_sheet(Request $req){
+        $id = $req->input('ecp');
+
+        $teaDet = DB::table('tea_stock_details')->where('id',$id)->first();
+        $exDet = DB::table('export_details')->where('id',$teaDet->export_id)->first();
+        $companyDet = DB::table('compnay_details')->where('com_id',$exDet->company_id)->first();
+
+        //passing data here
+        $data = ['id'=>$id,'company'=>$companyDet];
+        $pdf = PDF::loadView('printexport',$data);    
+        return $pdf->download('demo.pdf');    
+        echo $id;
     }
 
     public function dashboard(){

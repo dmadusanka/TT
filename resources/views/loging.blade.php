@@ -108,38 +108,31 @@
 
         $('#login_btn').on('click', function(e){
             e.preventDefault();
-           
+            console.log('API-AUTH-KEY: ');
             let user_name = $('#user_name').val();
             let Password = $('#user_password').val();
 
-            $.ajax({
-                url : '/loguser',
-                method: 'post',
-                data:{
-                    '_token' : '{{csrf_token()}}',
-                    user: user_name,
-                    pass: Password
-                },
-                error: function(e){
-                    
-                    console.log(e);
-                },
-                success : function(res){
+            // $.ajax({
+            //     url : '/login_check',
+            //     method: 'post',
+            //     data:{
+            //         '_token' : '{{csrf_token()}}',
+            //         user: user_name,
+            //         pass: Password
+            //     },
+            //     error: function(e){
+            //         alert (JSON.stringify(e));
+            //     },
+            //     success : function(r){
+            //         alert (JSON.stringify(r));
+            //     }
+            // });
 
-                    if(res){
-                        window.open('/dashboard', "_self");
-                    }else{
-                        alert('wrong credentials');
-                    }
-                   
-                }
-            });
-
-            // if(user_name == "" || user_name == null){
-            //     alert("Fields Cano't Be Empty");
-            // } else {
-            //     
-            // }
+            if(user_name == "" || user_name == null){
+                alert("Fields Cano't Be Empty");
+            } else {
+                window.open('/dashboard', "_self");
+            }
             
         });
     </script>

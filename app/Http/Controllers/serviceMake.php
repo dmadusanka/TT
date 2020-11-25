@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\teaTask;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class serviceMake extends Controller 
 {
@@ -47,7 +48,7 @@ class serviceMake extends Controller
             'ship_qty_kg'=>$req->input('shipment_qua')
         ]);
 
-        DB::table('tea_stock_details')->insertGetId([
+        $id1 = DB::table('tea_stock_details')->insertGetId([
             'export_id'=>$id,
             'task_id'=>$req->input('search'),
             'using_tea'=>$req->input('using_tea'),
@@ -55,7 +56,21 @@ class serviceMake extends Controller
         ]);
 
 
-        return true;
+        return ['status'=>true,'id1'=>$id1];
+    }
+
+    public function print_sheet(Request $req){
+        $id = $req->input('ecp');
+
+        $teaDet = DB::table('tea_stock_details')->where('id',$id)->first();
+        $exDet = DB::table('export_details')->where('id',$teaDet->export_id)->first();
+        $companyDet = DB::table('compnay_details')->where('com_id',$exDet->company_id)->first();
+
+        //passing data here
+        $data = ['id'=>$id,'company'=>$companyDet];
+        $pdf = PDF::loadView('printexport',$data);    
+        return $pdf->download('demo.pdf');    
+        echo $id;
     }
 
     public function dashboard(){

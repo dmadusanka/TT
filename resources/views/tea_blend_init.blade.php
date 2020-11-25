@@ -233,6 +233,9 @@
 					<button id="submit" name="submit" type="submit" class="btn btn-primary">
 						<i class="icon-check2"></i> Save
 					</button>
+					<section id="printId">
+						
+					</section>
 
 				</div>
 					<input type="hidden" id="operation" name="operation" value="insert">
@@ -506,6 +509,15 @@
 						// 	table_load();
 						// 	alert ("Not DONE");
 						// }
+						if(r['status']){
+							var html = `<a id="print" name="print" href="/generateExport?ecp=`+r['id1']+`" type="submit" class="btn btn-success">
+											<i class="icon-check2"></i>Print
+										</a>`;
+
+							$('#printId').html(html);			
+
+
+						}
 						console.log(r);
 						
 					},

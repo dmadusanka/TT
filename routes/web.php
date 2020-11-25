@@ -24,7 +24,7 @@ Route::post('/select_tea_update_data', 'serviceMake@select_tea_update_data');
 Route::get('/tea_search', 'serviceMake@tea_search');
 Route::post('/lot_check', 'serviceMake@lot_check');
 Route::get('/blend_sheet_creator', 'serviceMake@blend_sheet_creator');
-
+Route::get('/generateExport','serviceMake@print_sheet');
 
 Route::get('/tea-Inventory', 'InventoryController@teaInventory');
 Route::get('/tea-Blend', 'serviceMake@tea_blend_unit');
